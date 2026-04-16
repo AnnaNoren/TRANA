@@ -152,13 +152,13 @@ endef
 install: assets/databases/emu_database/species_taxid.fasta assets/databases/emu_database/taxonomy.tsv assets/databases/krona/taxonomy/taxonomy.tab
 
 assets/databases/emu_database/species_taxid.fasta: assets/databases/emu_database/species_taxid.fasta.gz
-	zcat $< > $@
+	gunzip -c $< > $@
 
 assets/databases/emu_database/taxonomy.tsv: assets/databases/emu_database/taxonomy.tsv.gz
-	zcat $< > $@
+	gunzip -c $< > $@
 
 assets/databases/krona/taxonomy/taxonomy.tab: assets/databases/krona/taxonomy/taxonomy.tab.gz
-	zcat $< > $@
+	gunzip -c $< > $@
 
 schema:
 	nf-core pipelines schema build
