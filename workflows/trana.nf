@@ -113,15 +113,6 @@ workflow TRANA {
             ch_optionally_trimmed_reads.set{ ch_processed_passed_reads }
         }
 
-        //
-        // MODULE: run NANOPLOT_PROCESSED_READS
-        //
-        NANOPLOT_PROCESSED_READS(ch_processed_passed_reads)
-        ch_versions = ch_versions.mix(NANOPLOT_PROCESSED_READS.out.versions)
-        ch_multiqc_files = ch_multiqc_files.mix(
-            NANOPLOT_PROCESSED_READS.out.txt.collect{ it[1] }
-        )
-
     } else if (params.seqtype == "sr") {
 
         //
