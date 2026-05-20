@@ -318,6 +318,11 @@
                     "type": "string",
                     "default": "assets/databases/krona/taxonomy/taxonomy.tab",
                     "description": "Path to the taxonomy.tab used by Krona"
+                },
+                "its": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Whether to run the krona module with text input (true) or taxonomy input (false). Set to true if you are running the pipeline with the ITS database and want to use the text output from EMU for the krona plot. Set to false if you are running with the standard EMU database and want to use the taxonomy output from EMU for the krona plot."
                 }
             }
         },
