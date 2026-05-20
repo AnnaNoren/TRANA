@@ -11,6 +11,7 @@ include { methodsDescriptionText                 } from '../subworkflows/local/u
 include { GENERATE_MASTER_HTML                   } from '../modules/local/generate_master_html/main.nf'
 include { EMU_ABUNDANCE                          } from '../modules/local/emu/abundance/main.nf'
 include { KRONA_KTIMPORTTAXONOMY                 } from '../modules/nf-core/krona/ktimporttaxonomy/main.nf'
+include { KRONA_KTIMPORTTEXT                     } from '../modules/nf-core/krona/ktimporttext/main.nf'
 include { CUSTOM_DUMPSOFTWAREVERSIONS            } from '../modules/nf-core/custom/dumpsoftwareversions/main.nf'
 include { MULTIQC                                } from '../modules/nf-core/multiqc/main.nf'
 include { FASTQC                                 } from '../modules/nf-core/fastqc/main.nf'
@@ -155,7 +156,7 @@ workflow TRANA {
     //
     EMU_ABUNDANCE(ch_processed_optionally_sampled_reads)
     ch_versions = ch_versions.mix(EMU_ABUNDANCE.out.versions)
-    if (params.run_krona) {
+    if (params.run_krona && !params.its) {
         //
         // MODULE: Run krona plot
         //
@@ -164,6 +165,16 @@ workflow TRANA {
             file(params.krona_taxonomy_tab, checkExists: true)
         )
         ch_versions = ch_versions.mix(KRONA_KTIMPORTTAXONOMY.out.versions.first())
+    }
+    if (params.run_krona && params.its) {
+        // MODULE: Run krona plot with text input
+        REORDER_FOR_KRONA(
+            EMU_ABUNDANCE.out.report
+        )
+        KRONA_KTIMPORTTEXT(
+            REORDER_FOR_KRONA.out.reordered
+        )
+        ch_versions = ch_versions.mix(KRONA_KTIMPORTTEXT.out.versions.first())
     }
 
     // MODULE: run translate_taxids
