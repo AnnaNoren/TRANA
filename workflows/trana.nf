@@ -175,7 +175,7 @@ workflow TRANA {
         KRONA_KTIMPORTTEXT(
             REORDER_FOR_KRONA.out.reordered
         )
-        ch_versions = ch_versions.mix(KRONA_KTIMPORTTEXT.out.versions_krona.first())
+        ch_versions = ch_versions.mix(KRONA_KTIMPORTTEXT.out.versions.first())
     }
 
     // MODULE: run translate_taxids
